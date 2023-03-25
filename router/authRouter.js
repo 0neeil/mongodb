@@ -1,6 +1,7 @@
 const Router = require('express')
 const controller = require('../controller/authController')
 const {check} = require('express-validator')
+const admin = require("../admin_menu/admin")
 
 
 const router = new Router()
@@ -13,5 +14,6 @@ router.post('/registration',[
     ], controller.registration)
 router.post('/login', controller.login)
 router.get('/users', controller.getUsers)
+router.post('/delete', admin.deleteUser)
 
 module.exports = router

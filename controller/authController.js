@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
+const { get } = require('mongoose')
 
 const generateAccessToken = (id, username, roles) =>{
     const payload = {
@@ -65,10 +66,12 @@ class authController {
 
     async getUsers(req, res){
         try {
-            res.json("work")
+            const getUser = await User.find()
+            res.json(getUser)
         } catch (error) {
             console.log(error)
         }
+
     }
 }
 
