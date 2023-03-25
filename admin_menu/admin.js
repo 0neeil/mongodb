@@ -12,11 +12,12 @@ class adminMenu{
         try {
             const {username} = req.body
             let delUser = await User.findOne({username})
+            console.log(delUser)
             if(delUser != null){
-                await User.deleteOne({delUser})
+                await User.deleteOne({username: delUser.username})
                 res.json('user deleted')
             }else
-            res.json({message: `user ${username} dont find`})
+                res.json({message: `user ${username} dont find`})
             
         } catch (error) {
             console.log (error)
