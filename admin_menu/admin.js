@@ -12,7 +12,6 @@ class adminMenu{
         try {
             const {username} = req.body
             let delUser = await User.findOne({username})
-            console.log(delUser)
             if(delUser != null){
                 await User.deleteOne({username: delUser.username})
                 res.json('user deleted')
