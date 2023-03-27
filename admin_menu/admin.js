@@ -1,11 +1,4 @@
 const User = require('../models/User')
-const Role = require('../models/Role')
-const bcrypt = require('bcryptjs')
-const {validationResult} = require('express-validator')
-const jwt = require('jsonwebtoken')
-const config = require('../config')
-const { get } = require('mongoose')
-const { findOne } = require('../models/User')
 
 class adminMenu{
     async deleteUser(req, res){
@@ -14,9 +7,9 @@ class adminMenu{
             let delUser = await User.findOne({username})
             if(delUser != null){
                 await User.deleteOne({username: delUser.username})
-                res.json('user deleted')
+                res.json('User deleted')
             }else
-                res.json({message: `user ${username} dont find`})
+                res.json({message: `user ${username} don't find`})
             
         } catch (error) {
             console.log (error)
