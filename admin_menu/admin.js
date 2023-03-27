@@ -21,10 +21,32 @@ class adminMenu{
             const {username} = req.body
             let banUser = await User.findOne({username})
             if(banUser != null){
+                if(!banUser.ban){
                 await User.updateOne({username: banUser.username}, {$set: {ban: true}})
-                res.json('User banned')
+                res.json({message: 'User banned'})
+                }
+                else
+                    res.json({message: 'This user is already banned'})
             }else
-                res.json({message: `user ${username} don't find`})
+                res.json({message: `User ${username} don't find`})
+        } catch (error) {
+            console.log (error)
+        }
+    }
+
+    async unbanUser(req, res){
+        try {
+            const {username} = req.body
+            let banUser = await User.findOne({username})
+            if(banUser != null){
+                if(banUser.ban){
+                await User.updateOne({username: banUser.username}, {$set: {ban: false}})
+                res.json({message: 'User unbanned'})
+                }
+                else
+                    res.json({message: 'This user is not banned'})
+            }else
+                res.json({message: `User ${username} don't find`})
         } catch (error) {
             console.log (error)
         }
