@@ -16,5 +16,6 @@ router.post('/registration',[
 router.post('/login', banChecker, controller.login)
 router.get('/users',roleMiddleware(['Admin', 'Manager']) ,controller.getUsers)
 router.post('/delete',roleMiddleware(['Admin', 'Manager']) ,admin.deleteUser)
+router.post('/ban', roleMiddleware(['Admin', 'Manager']), admin.banUser)
 
 module.exports = router
