@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const authRouter = require('./router/authRouter')
-
+const config = require("./config")
 
 
 const PORT = process.env.PORT || 5000
@@ -13,7 +13,7 @@ app.use('/auth', authRouter)
 
 async function start() {
     try {
-        await mongoose.connect('mongodb+srv://admin:admin@cluster0.nvu0195.mongodb.net/?retryWrites=true&w=majority')
+        await mongoose.connect(config.URL)
 
         app.listen(PORT, () => {
             console.log(`server start ${PORT}`)

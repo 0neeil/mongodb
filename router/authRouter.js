@@ -18,5 +18,6 @@ router.get('/users',roleMiddleware(['Admin', 'Manager']) ,controller.getUsers)
 router.post('/delete',roleMiddleware(['Admin', 'Manager']) ,admin.deleteUser)
 router.post('/ban', roleMiddleware(['Admin', 'Manager']), admin.banUser)
 router.post('/unban', roleMiddleware(['Admin', 'Manager']), admin.unbanUser)
+router.post('/setrole', roleMiddleware(['Admin']), admin.setUserRole)
 
 module.exports = router

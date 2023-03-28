@@ -51,6 +51,24 @@ class adminMenu{
             console.log (error)
         }
     }
+
+
+    async setUserRole(req, res){
+        try {
+            const {username, role}= req.body 
+            const user = await User.findOne({username})
+            if(user != null){
+                if(user.roles === role){
+                    return res.status(400).json({message: "User already has this role"})
+                }
+                await User.updateOne({username: user.username}, {$set: {roles: role}})
+                return res.json({message: "User role changed"})
+            }
+            return res.status(400).json({message: "User not found"})
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 module.exports = new adminMenu()
