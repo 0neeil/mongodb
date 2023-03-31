@@ -10,7 +10,12 @@ const { countDocuments } = require('../models/Products')
 class productsController {
 
     async getProducts (req, res){
-
+        try {
+            const getProduct = await Products.find()
+            res.json(getProduct)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async addProducts (req, res) {
