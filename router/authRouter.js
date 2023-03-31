@@ -28,5 +28,6 @@ router.post('/addproduct', [
     check('productname', "The productname cannot be shorter than 4 or more than 24 characters").isLength({min: 2, max: 24}),
 ], roleMiddleware(['Admin', 'Manager']), product.addProducts)
 router.get('/getproducts', roleMiddleware(['Admin', 'Manager', 'User']), product.getProducts)
+router.post('/deleteproduct', roleMiddleware(['Manager', 'Admin']), product.deleteProducts)
 
 module.exports = router

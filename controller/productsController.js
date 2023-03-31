@@ -40,7 +40,22 @@ class productsController {
             console.log(error)
         }
         
-    }  
+    } 
+    
+    async deleteProducts (req, res) {
+        try {
+            const {code} = req.body
+            const product = await Products.findOne({code})
+            if (!product){
+                return res.status(400).json({message: "Product with this code not found"})
+            }
+            await Products.deleteOne({code: code})
+            res.json({message: "Product deleted"})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+ 
 
     async buyProducts (req, res) {
 
