@@ -29,5 +29,12 @@ router.post('/addproduct', [
 ], roleMiddleware(['Admin', 'Manager']), product.addProducts)
 router.get('/getproducts', roleMiddleware(['Admin', 'Manager', 'User']), product.getProducts)
 router.post('/deleteproduct', roleMiddleware(['Manager', 'Admin']), product.deleteProducts)
+router.post('/updateproduct',[
+    check('code', "This field cannot be empty").notEmpty(),
+    check('code', "The code cannot be shorter than 2 or more than 6 characters").isLength({min: 2, max: 6}),
+    check('productname', "This field cannot be empty").notEmpty(),
+    check('productname', "The productname cannot be shorter than 4 or more than 24 characters").isLength({min: 2, max: 24}),
+    check('cost', ">=0").isFloat({min: 0}),
+], product.updateProduct)
 
 module.exports = router

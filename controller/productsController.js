@@ -56,6 +56,31 @@ class productsController {
         }
     }
  
+    async updateProduct (req, res) {
+        try {
+
+            const errors = validationResult(req)
+            
+            if(!errors.isEmpty()){
+                return res.status(400).json({message:"Registration error", errors})
+            }
+
+            const newProduct = req.body
+            const code = newProduct.code
+            const product = await Products.findOne({code})
+            if(!product){
+                return res.status(400).json({message: "Product with this code not found"})
+            }
+            await Products.updateOne({code: newProduct.code}, {$set: {
+                code: newProduct.code || product.productname, 
+                productname: newProduct.productname || product.productname, 
+                available: newProduct.available || product.available, 
+                cost: newProduct.cost|| product.cost}})
+                res.json({message: 'Product uppdate'})
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     async buyProducts (req, res) {
 
