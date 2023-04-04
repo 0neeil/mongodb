@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const Products = require('../models/Products')
+const Purchase = require('../models/Purchase')
 const bcrypt = require('bcryptjs')
 const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken')
@@ -58,13 +59,11 @@ class productsController {
  
     async updateProduct (req, res) {
         try {
-
             const errors = validationResult(req)
             
             if(!errors.isEmpty()){
-                return res.status(400).json({message:"Registration error", errors})
+                return res.status(400).json({message:"Update error", errors})
             }
-
             const newProduct = req.body
             const code = newProduct.code
             const product = await Products.findOne({code})
@@ -83,6 +82,33 @@ class productsController {
     }
 
     async buyProducts (req, res) {
+        try {
+            const {code, quantity} = req.body
+            const product = await Products.findOne({code})
+            if (!product){
+                return res.status(400).json({message: `Product with ${code} not found`})
+            }
+            if(quantity > product.available){
+                return res.status(400).json({message: `How many products are out of stock`})
+            }
+
+            let now = new Date()
+            const token = req.headers.authorization.split(' ')[1]
+
+            const {username: username} = jwt.verify(token, config.SECRETKEY)
+            const purchase = new Purchase({code: code, productname: product.productname, quantity, cost: product.cost * quantity , username, date: now})
+            
+            await purchase.save()
+
+            await Products.updateOne({code: code}, {$set: {
+                available: product.available - quantity, 
+            }})
+            res.json({message: 'Buy success'})
+            
+        } catch (error) {
+           console.log(error)
+           res.status(400).json({message: 'Login error'})
+        }
 
     }
 
